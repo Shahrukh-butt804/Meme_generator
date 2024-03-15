@@ -1,25 +1,56 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from "react";
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
+import { useNavigate } from "react-router-dom";
+
 
 function App() {
+  const navigate = useNavigate();
+
+  let [meme, setmeme] = useState([])
+
+  useEffect(() => {
+
+    fetch("https://api.imgflip.com/get_memes")
+      .then((res) => {
+        let data = res.json()
+        return data
+      })
+      .then((data) => {
+        setmeme(data.data.memes)
+
+      }).catch((error) => console.log(error))
+  }, [])
+
+
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <h1 className="text-center mt-3 ">MEME Generator App</h1>
+
+      <div className="row">
+        {meme ?
+          meme.map((elem) => {
+            return (
+              <Card style={{ width: '18rem', margin: "10px" }} key={elem.id}>
+                <Card.Img variant="top" src={elem.url} />
+                <Card.Body>
+                  <Card.Title>{elem.name}</Card.Title>
+                  <Button variant="primary" onClick={(e) => {
+                    navigate(`/edit/${elem.id}?url=${elem.url}`)
+                  }}>Edit</Button>
+                </Card.Body>
+              </Card>
+            )
+
+          })
+          :
+          <></>
+        }
+      </div>
+    </>
   );
 }
 
-export default App;
+export default App
