@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
+import {Button,Card} from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
 
 
@@ -27,17 +26,17 @@ function App() {
 
   return (
     <>
-      <h1 className="text-center mt-3 ">MEME Generator App</h1>
+      <h1 className="text-center mt-3 text-decoration-underline">MEME Generator App</h1>
 
-      <div className="row">
+      <div className="row ms-4 mt-3">
         {meme ?
           meme.map((elem) => {
             return (
-              <Card style={{ width: '18rem', margin: "10px" }} key={elem.id}>
-                <Card.Img variant="top" src={elem.url} />
+              <Card style={{ width: '17rem', margin: "10px"}} key={elem.id}>
+                <Card.Img variant="top" src={elem.url} style={{height:'280px'}} />
                 <Card.Body>
-                  <Card.Title>{elem.name}</Card.Title>
-                  <Button variant="primary" onClick={(e) => {
+                  <Card.Title>{elem.name.slice(0,18)}</Card.Title>
+                 <Button className="mt-2 " variant="primary" onClick={(e) => {
                     navigate(`/edit/${elem.id}?url=${elem.url}`)
                   }}>Edit</Button>
                 </Card.Body>
